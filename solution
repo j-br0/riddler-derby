@@ -1,0 +1,48 @@
+from random import random
+
+class Horse(object):
+    def __init__(self, name, pos, frate):
+        self.name = name
+        self.pos = pos
+        self.frate = frate
+
+    def __str__(self):
+        return self.name
+
+def run_race():
+    stable = []
+    for i in range(20):
+        x = Horse(str(i + 1), 0, .52 + (i * .02))
+        stable.append(x)
+    winners = []
+    while True:
+        for horse in stable:
+            x = random()
+            if x <= horse.frate:
+                horse.pos += 1
+            else:
+                horse.pos -= 1
+            if horse.pos == 200:
+                winners.append(horse.name)
+        if len(winners) > 0:
+            break
+    return winners
+
+def run_a_lot(times):
+    races = {}
+    odds = []
+    for i in range(times):
+        y = run_race()
+        for winner in y:
+            try:
+                races[winner] += 1
+            except KeyError:
+                races[winner] = 1
+    times = float(times)
+    for key in races:
+        odds.append((key, races[key] / times))
+    return odds
+
+print run_a_lot(500000)
+print run_a_lot(500000)
+print run_a_lot(1000000)
